@@ -1,21 +1,28 @@
 "use client"
-
-import { useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/TODO/components/ui/table"
 import { Button } from "@/TODO/components/ui/button"
 import { Edit } from "lucide-react"
 
+// Function to format the date
+function formatDate(dateString: string): string {
+  const date = new Date(dateString)
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+}
 
-export function TaskTable({tasks}: {tasks: any}) {
-    console.log(tasks)
-
+export function TaskTable({ tasks }: { tasks: any }) {
   const handleEdit = (id: number) => {
     // Implement edit functionality here
     console.log(`Editing task with id: ${id}`)
   }
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-10 text-white">
       <Table>
         <TableHeader>
           <TableRow>
@@ -26,11 +33,11 @@ export function TaskTable({tasks}: {tasks: any}) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tasks.map((task:any) => (
+          {tasks.map((task: any) => (
             <TableRow key={task.id}>
               <TableCell className="font-medium">{task.id}</TableCell>
-              <TableCell>{task.name}</TableCell>
-              <TableCell>{task.doneBy}</TableCell>
+              <TableCell>{task.title}</TableCell>
+              <TableCell>{formatDate(task.expires)}</TableCell>
               <TableCell className="text-right">
                 <Button variant="ghost" size="sm" onClick={() => handleEdit(task.id)}>
                   <Edit className="h-4 w-4 mr-2" />

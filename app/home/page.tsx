@@ -10,16 +10,6 @@ async function HomePage() {
         where: { userId: user?.id },
         orderBy: { createdAt: "desc" },
     });
-    function checkTastk(tasks:any){
-        if(tasks.lenght < 1){
-            console.log('något e fel')
-            return false
-        } else{
-            console.log('allt är rätt')
-            return true
-        }
-    }
-    checkTastk(tasks)
     return (
         <>
             <AccountInfor user={user} />
