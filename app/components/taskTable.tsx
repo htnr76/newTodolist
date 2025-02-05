@@ -2,16 +2,14 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/TODO/components/ui/table"
 import { Button } from "@/TODO/components/ui/button"
 import { Edit } from "lucide-react"
-
+import EditTaskPopover from "./editTask/editTaskPopover"
 // Function to format the date
 function formatDate(dateString: string): string {
   const date = new Date(dateString)
   return date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+    day: "numeric"
   })
 }
 
@@ -22,7 +20,7 @@ export function TaskTable({ tasks }: { tasks: any }) {
   }
 
   return (
-    <div className="container mx-auto py-10 text-white">
+    <div className="w-auto h-auto my-4 mx-5 py-10 text-white">
       <Table>
         <TableHeader>
           <TableRow>
@@ -39,12 +37,11 @@ export function TaskTable({ tasks }: { tasks: any }) {
               <TableCell>{task.title}</TableCell>
               <TableCell>{formatDate(task.expires)}</TableCell>
               <TableCell className="text-right">
-                <Button variant="ghost" size="sm" onClick={() => handleEdit(task.id)}>
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit
-                </Button>
+                <EditTaskPopover task={task} />
               </TableCell>
             </TableRow>
+
+
           ))}
         </TableBody>
       </Table>

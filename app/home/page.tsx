@@ -14,6 +14,7 @@ async function HomePage() {
         <>
             <AccountInfor user={user} />
             <TaskTable tasks={tasks}/>
+            
         </>
     );
 }

@@ -19,7 +19,7 @@ export default async function CreateTask({task}: {task:Task}){
                 userId: session.user.id as string,
                 title: task.title,
                 description: task.description,
-                expires: new Date(task.date)
+                expires: new Date(task.date + 'T00:00:00.000Z')
             }
         })
         console.log(newTask)
