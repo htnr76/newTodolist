@@ -1,51 +1,51 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-import { Button } from "@/TODO/components/ui/button"
-import { Calendar } from "@/TODO/components/ui/calendar"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/TODO/components/ui/form"
-import { Popover, PopoverContent, PopoverTrigger } from "@/TODO/components/ui/popover"
-import { cn } from "@/TODO/lib/utils"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/TODO/components/ui/dialog"
-import { Input } from "@/TODO/components/ui/input"
-import { Label } from "@/TODO/components/ui/label"
-import { Textarea } from "@/TODO/components/ui/textarea"
-import CreateTask from "./actions"
+import { Button } from "@/TODO/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/TODO/components/ui/form";
+import { Popover, PopoverContent, PopoverTrigger } from "@/TODO/components/ui/popover";
+import { cn } from "@/TODO/lib/utils";
+import SolarSytem from "../../test/Comps/solar";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/TODO/components/ui/dialog";
+import { Input } from "@/TODO/components/ui/input";
+import { Label } from "@/TODO/components/ui/label";
+import { Textarea } from "@/TODO/components/ui/textarea";
+import CreateTask from "./actions";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   date: z.date().optional(),
   description: z.string().optional(),
-})
+});
 
 export default function AddTaskPopover() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
       date: undefined,
-      description: ""
-    }
-  })
+      description: "",
+    },
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     const task = {
       title: data.title,
       description: data.description || "",
-      date: data.date ? format(data.date, "yyyy-MM-dd") : ""
-    }
-    
-    CreateTask({ task })
-    setOpen(false)
-    form.reset()
+      date: data.date ? format(data.date, "yyyy-MM-dd") : "",
+    };
+
+    CreateTask({ task });
+    setOpen(false);
+    form.reset();
   }
 
   return (
@@ -98,13 +98,15 @@ export default function AddTaskPopover() {
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) => date < new Date()}
-                        initialFocus
-                      />
+                      <div className="w-[400px] h-[400px] bg-black rounded-2xl flex items-center justify-center">
+                        <SolarSytem
+                          onDateSelect={({ day, month, year }) => {
+                            const dateString = `${year}-${month}-${day}`;
+                            const selectedDate = new Date(dateString);
+                            form.setValue("date", selectedDate);
+                          }}
+                        />
+                      </div>
                     </PopoverContent>
                   </Popover>
                   <FormMessage className="col-span-3 col-start-2" />
@@ -133,5 +135,5 @@ export default function AddTaskPopover() {
         </Form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
